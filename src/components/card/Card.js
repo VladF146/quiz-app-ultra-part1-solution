@@ -1,8 +1,10 @@
 import "./Card.css";
 import { useState } from "react";
 
-function Card({ question, answer, tags }) {
+function Card({ card }) {
   const [show, setShow] = useState(false);
+  const { question, answer, tags, bookmarked } = card;
+  console.log(bookmarked);
 
   return (
     <section className="card">
@@ -12,7 +14,7 @@ function Card({ question, answer, tags }) {
         type="button"
         onClick={() => setShow(!show)}
       >
-        Show answer
+        {show ? "Hide answer" : "Show answer"}
       </button>
       <p className={`card__answer ${show ? "card__answer--active" : ""}`}>
         {answer}
@@ -27,7 +29,13 @@ function Card({ question, answer, tags }) {
           : ""}
       </ul>
       <div className="card__button-bookmark">
-        <button className="card__bookmark" aria-label="bookmark" type="button">
+        <button
+          className={`card__bookmark ${
+            bookmarked ? "card__bookmark--active" : ""
+          }`}
+          aria-label="bookmark"
+          type="button"
+        >
           <svg className="card__bookmark-icon" viewBox="0 0 24 24">
             <path d="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z" />
           </svg>
