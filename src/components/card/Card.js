@@ -1,17 +1,30 @@
 import "./Card.css";
+import { useState } from "react";
 
-function Card() {
+function Card({ question, answer, tags }) {
+  const [show, setShow] = useState(false);
+
   return (
     <section className="card">
-      <h2>Question</h2>
-      <button className="card__button-answer" type="button">
+      <h2>{question}</h2>
+      <button
+        className="card__button-answer"
+        type="button"
+        onClick={() => setShow(!show)}
+      >
         Show answer
       </button>
-      <p className="card__answer card__answer--active">Answer lorem ipsum...</p>
+      <p className={`card__answer ${show ? "card__answer--active" : ""}`}>
+        {answer}
+      </p>
       <ul className="card__tag-list">
-        <li className="card__tag-list-item">#HTML</li>
-        <li className="card__tag-list-item">#CSS</li>
-        <li className="card__tag-list-item">#JavaScript</li>
+        {tags.length > 0
+          ? tags.map((e, i) => (
+              <li key={i} className="card__tag-list-item">
+                {e}
+              </li>
+            ))
+          : ""}
       </ul>
       <div className="card__button-bookmark">
         <button className="card__bookmark" aria-label="bookmark" type="button">
@@ -25,3 +38,9 @@ function Card() {
 }
 
 export default Card;
+
+function log(content) {
+  console.log(content);
+}
+
+log("Hello");
