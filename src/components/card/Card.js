@@ -4,7 +4,6 @@ import { useState } from "react";
 function Card({ card }) {
   const [show, setShow] = useState(false);
   const { question, answer, tags, bookmarked } = card;
-  console.log(bookmarked);
 
   return (
     <section className="card">
