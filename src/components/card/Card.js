@@ -1,9 +1,9 @@
 import "./Card.css";
 import { useState } from "react";
 
-function Card({ card }) {
+function Card({ card, onDelete, onToggle }) {
   const [show, setShow] = useState(false);
-  const { question, answer, tags, bookmarked } = card;
+  const { question, answer, tags, bookmarked, id } = card;
 
   return (
     <section className="card">
@@ -18,6 +18,13 @@ function Card({ card }) {
       <p className={`card__answer ${show ? "card__answer--active" : ""}`}>
         {answer}
       </p>
+      <button
+        className="card__button-answer"
+        type="button"
+        onClick={() => onDelete(id)}
+      >
+        Delete card!
+      </button>
       <ul className="card__tag-list">
         {tags.length > 0
           ? tags.map((e, i) => (
@@ -34,6 +41,7 @@ function Card({ card }) {
           }`}
           aria-label="bookmark"
           type="button"
+          onClick={() => onToggle(id)}
         >
           <svg className="card__bookmark-icon" viewBox="0 0 24 24">
             <path d="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z" />

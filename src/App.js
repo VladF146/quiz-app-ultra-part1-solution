@@ -6,7 +6,7 @@ import Profile from "./pages/Profile";
 import Navigation from "./components/navigation/Navigation";
 import { useState } from "react";
 
-const cards = [
+const cardsArray = [
   {
     id: 1,
     question: "What is HTML?",
@@ -32,17 +32,51 @@ const cards = [
 
 function App() {
   const [route, setRoute] = useState("cards");
+  const [cards, setCards] = useState(cardsArray);
+
+  function appendCard(data) {
+    const { question, answer, tags } = data;
+    setCards([
+      {
+        question: question,
+        answer: answer,
+        tags: tags,
+        bookmarked: false,
+      },
+      ...cards,
+    ]);
+  }
+
+  function deleteCard(cardId) {
+    setCards(cards.filter((card) => card.id !== cardId));
+  }
+
+  function toggleBookmark(cardId) {
+    setCards(
+      cards.map((card) =>
+        card.id === cardId ? { ...card, bookmarked: !card.bookmarked } : card
+      )
+    );
+  }
 
   return (
     <div className="app">
       <Header />
       <main className="app__main">
         {route === "cards" ? (
-          <Cards cards={cards} />
+          <Cards
+            cards={cards}
+            onDelete={deleteCard}
+            onToggle={toggleBookmark}
+          />
         ) : route === "bookmark" ? (
-          <Cards cards={cards.filter((e) => e.bookmarked === true)} />
+          <Cards
+            cards={cards.filter((e) => e.bookmarked === true)}
+            onDelete={deleteCard}
+            onToggle={toggleBookmark}
+          />
         ) : route === "create" ? (
-          <Create />
+          <Create onSubmit={appendCard} setRoute={setRoute} />
         ) : (
           <Profile />
         )}
