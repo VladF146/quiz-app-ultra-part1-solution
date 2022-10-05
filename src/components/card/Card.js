@@ -1,9 +1,17 @@
 import "./Card.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Card({ card, onDelete, onToggle }) {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { question, answer, tags, bookmarked, id } = card;
+
+  function showDetails() {
+    navigate(`${id}`);
+  }
+
 
   return (
     <section className="card">
@@ -47,15 +55,14 @@ function Card({ card, onDelete, onToggle }) {
             <path d="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z" />
           </svg>
         </button>
+        {location.pathname === "/" || location.pathname === "/bookmark" ? (
+          <button onClick={showDetails}>Show details</button>
+        ) : (
+          ""
+        )}
       </div>
     </section>
   );
 }
 
 export default Card;
-
-function log(content) {
-  console.log(content);
-}
-
-log("Hello");

@@ -1,12 +1,17 @@
-export default function Create({ onSubmit, setRoute }) {
+import { useNavigate } from "react-router-dom";
+
+export default function Create({ onSubmit }) {
   function handleSubmit(e) {
     e.preventDefault();
     const data = new FormData(e.target);
     const values = Object.fromEntries(data);
     onSubmit({ ...values, tags: [values.tags], id: Math.random() });
     e.target.reset();
-    setRoute("cards");
+    navigate("/");
   }
+
+  let navigate = useNavigate();
+
   return (
     <div>
       <form onSubmit={handleSubmit}>

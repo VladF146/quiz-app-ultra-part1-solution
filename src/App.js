@@ -3,7 +3,10 @@ import Header from "./components/header/Header";
 import Cards from "./pages/Cards";
 import Create from "./pages/Create";
 import Profile from "./pages/Profile";
+import Edit from "./pages/Edit";
 import Navigation from "./components/navigation/Navigation";
+import { Routes, Route } from "react-router-dom";
+
 import { useState } from "react";
 
 const cardsArray = [
@@ -31,7 +34,6 @@ const cardsArray = [
 ];
 
 function App() {
-  const [route, setRoute] = useState("cards");
   const [cards, setCards] = useState(cardsArray);
 
   function appendCard(data) {
@@ -63,25 +65,37 @@ function App() {
     <div className="app">
       <Header />
       <main className="app__main">
-        {route === "cards" ? (
-          <Cards
-            cards={cards}
-            onDelete={deleteCard}
-            onToggle={toggleBookmark}
-          />
-        ) : route === "bookmark" ? (
-          <Cards
-            cards={cards.filter((e) => e.bookmarked === true)}
-            onDelete={deleteCard}
-            onToggle={toggleBookmark}
-          />
-        ) : route === "create" ? (
-          <Create onSubmit={appendCard} setRoute={setRoute} />
-        ) : (
-          <Profile />
-        )}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Cards
+                cards={cards}
+                onDelete={deleteCard}
+                onToggle={toggleBookmark}
+              />
+            }
+          >
+            <Route path=":cardId" element={<Edit cards={cards} />} />
+          </Route>
+          <Route
+            path="bookmark"
+            element={
+              <Cards
+                cards={cards.filter((e) => e.bookmarked === true)}
+                onDelete={deleteCard}
+                onToggle={toggleBookmark}
+              />
+            }
+          >
+            <Route path=":cardId" element={<Edit cards={cards} />} />
+          </Route>
+          <Route path="create" element={<Create onSubmit={appendCard} />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="*" element={<h1>Sorry, page doesn't exist!</h1>} />
+        </Routes>
       </main>
-      <Navigation route={route} setRoute={setRoute} />
+      <Navigation />
     </div>
   );
 }
